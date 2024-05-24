@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Pot & Trash
+    uniqueID: 2211175473
+    locked: 0
+  - name: Background
+    uniqueID: 204294509
+    locked: 0
+  - name: Icon
+    uniqueID: 84965427
+    locked: 0
+  - name: Card
+    uniqueID: 1350845659
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

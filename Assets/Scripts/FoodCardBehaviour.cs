@@ -82,7 +82,7 @@ public class FoodCardBehaviour : MonoBehaviour
                 {
                     if (click_counter == 1 && Time.time - last_click < 0.5f)  // double click, when clicking for the second time in 500ms
                     {
-                        transformCard();
+                        transform_card();
                     }
                     else
                     {
@@ -179,7 +179,7 @@ public class FoodCardBehaviour : MonoBehaviour
         card.transform.localScale = scaleChange;
     }
 
-    public void transformCard()
+    public void transform_card()
     {
         if (card_type == CardType.CHICKEN)
         {

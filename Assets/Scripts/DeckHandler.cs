@@ -83,7 +83,7 @@ public static class DeckHandler
         return active_pile[idx];
     }
 
-    public static CardType draw_card()
+    private static CardType draw_card()
     {
         if(draw_pile == null)
         {
@@ -116,11 +116,6 @@ public static class DeckHandler
         draw_pile.Remove(new_card);
 
         return new_card;
-    }
-
-    public static void cook_with_cards(List<CardType> cards)
-    {
-
     }
 
     public static double get_efficiency_of_card(CardType card)

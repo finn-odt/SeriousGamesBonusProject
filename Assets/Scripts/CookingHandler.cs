@@ -5,24 +5,43 @@ using UnityEngine;
 public static class CookingHandler
 {
 
-    private static List<CardType> cards_in_pot;
-    // Start is called before the first frame update
-    public static void put_in_pot(CardType card)
+    private static List<CardType> ingredients;
+
+    public static bool are_there_ingredients()
     {
-        if(cards_in_pot == null)
+        if(ingredients == null || ingredients.Count == 0)
         {
-            cards_in_pot = new List<CardType>();
+            return false;
         }
-        cards_in_pot.Add(card);
+        return true;
+    }
+
+    public static void add_ingredient(CardType card)
+    {
+        if (ingredients == null)
+        {
+            ingredients = new List<CardType>();
+        }
+        ingredients.Add(card);
     }
 
     public static void cook()
     {
+        if (ingredients == null)
+        {
+            return;
+        }
+
+        double effectivity = DeckHandler.detect_dish_quality(ingredients);
+
         double efficiency = 0;
-        foreach(CardType card in cards_in_pot)
+        foreach(CardType card in ingredients)
         {
             efficiency += DeckHandler.get_efficiency_of_card(card);
         }
-        efficiency = efficiency * 1.3;  // 30% Gewinn durch Cooking?
+        efficiency = efficiency * effectivity;
+
+        Debug.Log("Cooking with efficiency: " + efficiency);
     }
+
 }

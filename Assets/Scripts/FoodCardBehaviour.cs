@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class FoodCardBehaviour : MonoBehaviour //, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class FoodCardBehaviour : MonoBehaviour
 {
     [SerializeField] private bool dragging;
 
@@ -68,21 +68,30 @@ public class FoodCardBehaviour : MonoBehaviour //, IPointerDownHandler, IPointer
         // Check for double click
         if (Input.GetMouseButtonDown(0))
         {
-            if (click_counter == 0)
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0; // Setze die Z-Koordinate auf 0
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+            if (hit.collider != null && hit.collider.gameObject == card)
             {
-                click_counter++;
-                last_click = Time.time;
-            }
-            else
-            {
-                if (click_counter == 1 && Time.time - last_click < 0.5f)  // double click, when clicking for the second time in 500ms
+                if (click_counter == 0)
                 {
-                    transformCard();
+                    click_counter++;
+                    last_click = Time.time;
                 }
                 else
                 {
-                    click_counter = 0;
+                    if (click_counter == 1 && Time.time - last_click < 0.5f)  // double click, when clicking for the second time in 500ms
+                    {
+                        transformCard();
+                    }
+                    else
+                    {
+                        click_counter = 0;
+                    }
                 }
+            } else
+            {
+                click_counter = 0;
             }
         }
 
@@ -134,7 +143,9 @@ public class FoodCardBehaviour : MonoBehaviour //, IPointerDownHandler, IPointer
                 {
                     reached_target = true;
                     // Throw in cooking pot
-                    Debug.Log("in pot");
+                    CookingHandler.add_ingredient(card_type);
+                    card.SetActive(false);
+                    // TODO: add ingredient to ingredients_list (maybe in CookingHandler??)
                 }
                 else if (hits[i].collider.gameObject == trash)
                 {
@@ -170,7 +181,25 @@ public class FoodCardBehaviour : MonoBehaviour //, IPointerDownHandler, IPointer
 
     public void transformCard()
     {
-
+        if (card_type == CardType.CHICKEN)
+        {
+            card_type = CardType.TOFU;
+            load_sprites();
+        } else if (card_type == CardType.BACON)
+        {
+            card_type = CardType.VEGANBACON;
+            load_sprites();
+        }
+        else if (card_type == CardType.BEEF)
+        {
+            card_type = CardType.VEGANHACK;
+            load_sprites();
+        }
+        else if (card_type == CardType.PORK)
+        {
+            card_type = CardType.VEGANPORK;
+            load_sprites();
+        }
     }
 
     private void load_sprites()

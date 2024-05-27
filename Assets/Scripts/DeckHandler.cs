@@ -18,7 +18,11 @@ public enum CardType
     BACON,
     DOUGH,
     ZUCCHINI,
-    BROCCOLI
+    BROCCOLI, 
+    VEGANPORK,  // ab hier: nur durch transform() erhaltbare Zutaten
+    VEGANHACK,
+    TOFU,
+    VEGANBACON
 }
 
 /*
@@ -139,8 +143,55 @@ public static class DeckHandler
             case CardType.CHICKEN:
             case CardType.BACON:
                 return -1.0;
+            case CardType.VEGANBACON:
+            case CardType.VEGANHACK:
+            case CardType.VEGANPORK:
+            case CardType.TOFU:
+                return 0.8;
             default:
                 return 0.0;
         }
+    }
+
+    public static double detect_dish_quality(List<CardType> ingredients)
+    {
+        if(ingredients == null)
+        {
+            return 0;  // no dish
+        } 
+
+        if (ingredients.Count == 2)
+        {
+            bool pasta_with_tomatoe_sauce_easy = ingredients.Contains(CardType.NOODLES) && ingredients.Contains(CardType.TOMATOES);
+            bool potato_gratin_easy = ingredients.Contains(CardType.POTATOES) && ingredients.Contains(CardType.CHEESE);
+
+            if (pasta_with_tomatoe_sauce_easy || potato_gratin_easy)
+            {
+                return 1.1;  // 10% more effective
+            }
+        }
+        else if(ingredients.Count == 3)
+        {
+            bool pasta_with_tomatoe_sauce_normal = ingredients.Contains(CardType.NOODLES) && ingredients.Contains(CardType.TOMATOES) && ingredients.Contains(CardType.ONIONS);
+            bool potato_gratin = ingredients.Contains(CardType.POTATOES) && ingredients.Contains(CardType.CHEESE) && ingredients.Contains(CardType.CREAM);
+            bool tart_flambee_easy = ingredients.Contains(CardType.DOUGH) && ingredients.Contains(CardType.ONIONS) && ingredients.Contains(CardType.CREAM);
+
+            if(pasta_with_tomatoe_sauce_normal || potato_gratin || tart_flambee_easy)
+            {
+                return 1.2;  // 20% more effective
+            }
+        } else if(ingredients.Count == 4)
+        {
+            bool pasta_with_tomatoe_sauce = ingredients.Contains(CardType.NOODLES) && ingredients.Contains(CardType.TOMATOES) && ingredients.Contains(CardType.ONIONS) && ingredients.Contains(CardType.GARLIC);
+            bool potato_gratin_with_broccoli = ingredients.Contains(CardType.POTATOES) && ingredients.Contains(CardType.CHEESE) && ingredients.Contains(CardType.CREAM) && ingredients.Contains(CardType.BROCCOLI);
+            bool tart_flambee = ingredients.Contains(CardType.DOUGH) && ingredients.Contains(CardType.ONIONS) && ingredients.Contains(CardType.CREAM) && ingredients.Contains(CardType.ZUCCHINI);
+
+            if (pasta_with_tomatoe_sauce || potato_gratin_with_broccoli || tart_flambee)
+            {
+                return 1.3;  // 30% more effective
+            }
+        }
+
+        return 0.8;  // 20% less effective
     }
 }

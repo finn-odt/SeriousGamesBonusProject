@@ -90,7 +90,7 @@ public static class DeckHandler
             throw new Exception("Deck wasn't generated yet!");
         }
 
-        int card_idx = UnityEngine.Random.Range(0, draw_pile.Count + 1);
+        int card_idx = UnityEngine.Random.Range(0, draw_pile.Count);
 
         return draw_pile[card_idx];
     }

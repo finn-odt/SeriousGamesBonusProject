@@ -11,6 +11,7 @@ public class FoodCardBehaviour : MonoBehaviour
     public GameObject card;
     public GameObject trash;
     public GameObject pot;
+    public GameObject enemy;
 
     public float big_scale, small_scale;
 
@@ -42,6 +43,11 @@ public class FoodCardBehaviour : MonoBehaviour
         {
             DeckHandler.generate_deck();
             card_type = DeckHandler.get_card_from_actives(id);
+        }
+
+        if (enemy == null)
+        {
+            enemy = GameObject.FindWithTag("enemy");
         }
 
         // Change sprites according to card
@@ -151,6 +157,21 @@ public class FoodCardBehaviour : MonoBehaviour
                 {
                     reached_target = true;
                     // Throw in trash
+                    card_type = DeckHandler.throw_card_in_trash(card_type);
+                    load_sprites();
+                    scale_big();
+                    // Back to below origin
+                    Vector3 origin = new Vector3(initial_x, initial_y - 2.7f, 0);
+                    card.transform.position = origin;
+                    animation_offset = 2.6f;
+                    new_card_animation = true;
+                }
+                else if (hits[i].collider.gameObject == enemy)
+                {
+                    reached_target = true;
+
+                    FightingHandler.hit_with_card(card_type);
+
                     card_type = DeckHandler.throw_card_in_trash(card_type);
                     load_sprites();
                     scale_big();

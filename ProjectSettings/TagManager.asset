@@ -6,6 +6,7 @@ TagManager:
   tags:
   - card
   - enemy
+  - health_bar
   layers:
   - Default
   - TransparentFX

@@ -171,9 +171,16 @@ public static class DeckHandler
             bool potato_gratin = ingredients.Contains(CardType.POTATOES) && ingredients.Contains(CardType.CHEESE) && ingredients.Contains(CardType.CREAM);
             bool tart_flambee_easy = ingredients.Contains(CardType.DOUGH) && ingredients.Contains(CardType.ONIONS) && ingredients.Contains(CardType.CREAM);
 
-            if(pasta_with_tomatoe_sauce_normal || potato_gratin || tart_flambee_easy)
+            bool pasta_carbonara = ingredients.Contains(CardType.NOODLES) && ingredients.Contains(CardType.CREAM) && ingredients.Contains(CardType.BACON);
+            bool pasta_carbonara_veg = ingredients.Contains(CardType.NOODLES) && ingredients.Contains(CardType.CREAM) && ingredients.Contains(CardType.VEGANBACON);
+
+            if(pasta_with_tomatoe_sauce_normal || potato_gratin || tart_flambee_easy || pasta_carbonara_veg)
             {
                 return 1.2;  // 20% more effective
+            }
+            if(pasta_carbonara)
+            {
+                return 0.8;  // 20% less effective
             }
         } else if(ingredients.Count == 4)
         {

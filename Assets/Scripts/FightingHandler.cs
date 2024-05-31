@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class FightingHandler : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class FightingHandler : MonoBehaviour
     public GameObject enemy;
     public static double maxHealth = 100;
     public static Slider healthSlider;
+    public static TMPro.TextMeshProUGUI score;
+    private static double points = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +28,13 @@ public class FightingHandler : MonoBehaviour
             healthSlider.maxValue = (float)maxHealth;
             healthSlider.value = (float)enemyHealth;
         }
+
+        GameObject scoreObject = GameObject.FindWithTag("score");
+        if (scoreObject != null)
+        {
+            score = scoreObject.GetComponent<TMPro.TextMeshProUGUI>();
+        }
+        Debug.Log(score);
     }
 
     // Update is called once per frame
@@ -43,12 +53,15 @@ public class FightingHandler : MonoBehaviour
     }
 
     public static void hit_with_card(CardType card) {
-        double damage = CalculateDamage(DeckHandler.get_efficiency_of_card(card));
+        double efficiency = DeckHandler.get_efficiency_of_card(card);
+        double damage = CalculateDamage(efficiency);
+        add_score(efficiency * 10);
         hit(damage);
     }
 
     public static void hit_with_dish(double efficiency) {
         double damage = CalculateDamage(efficiency);
+        add_score(efficiency * 20);
         hit(damage);
     }
 
@@ -66,5 +79,14 @@ public class FightingHandler : MonoBehaviour
     private static double CalculateDamage(double efficiency)
     {
         return 30 * efficiency;
+    }
+
+    private static void add_score(double tmp_points) {
+        points += tmp_points;
+        Debug.Log("Score: " + points);
+        if (score != null)
+        {
+            score.text = points.ToString("F0");
+        }
     }
 }

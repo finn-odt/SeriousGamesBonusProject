@@ -180,7 +180,7 @@ public static class DeckHandler
             }
             if(pasta_carbonara)
             {
-                return 0.8;  // 20% less effective
+                return -0.2;
             }
         } else if(ingredients.Count == 4)
         {

@@ -42,6 +42,27 @@ public static class CookingHandler
         efficiency = efficiency * effectivity;
 
         Debug.Log("Cooking with efficiency: " + efficiency);
+
+        ingredients.Clear();
+
+        List<GameObject> deaktivated_cards = get_deaktivated_cards();
+        foreach(GameObject card in deaktivated_cards)
+        {
+            card.SetActive(true);
+        }
+    }
+
+    private static List<GameObject> get_deaktivated_cards()
+    {
+        List<GameObject> deaktivated_cards = new List<GameObject>();
+        foreach (GameObject card in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
+        {
+            if (card.CompareTag("card") && !card.activeInHierarchy)
+            {
+                deaktivated_cards.Add(card);
+            }
+        }
+        return deaktivated_cards;
     }
 
 }

@@ -151,20 +151,14 @@ public class FoodCardBehaviour : MonoBehaviour
                     // Throw in cooking pot
                     CookingHandler.add_ingredient(card_type);
                     card.SetActive(false);
-                    // TODO: add ingredient to ingredients_list (maybe in CookingHandler??)
+
+                    load_new_card();
                 }
                 else if (hits[i].collider.gameObject == trash)
                 {
                     reached_target = true;
-                    // Throw in trash
-                    card_type = DeckHandler.throw_card_in_trash(card_type);
-                    load_sprites();
-                    scale_big();
-                    // Back to below origin
-                    Vector3 origin = new Vector3(initial_x, initial_y - 2.7f, 0);
-                    card.transform.position = origin;
-                    animation_offset = 2.6f;
-                    new_card_animation = true;
+                    
+                    load_new_card();
                 }
                 else if (hits[i].collider.gameObject == enemy)
                 {
@@ -172,14 +166,7 @@ public class FoodCardBehaviour : MonoBehaviour
 
                     FightingHandler.hit_with_card(card_type);
 
-                    card_type = DeckHandler.throw_card_in_trash(card_type);
-                    load_sprites();
-                    scale_big();
-                    // Back to below origin
-                    Vector3 origin = new Vector3(initial_x, initial_y - 2.7f, 0);
-                    card.transform.position = origin;
-                    animation_offset = 2.6f;
-                    new_card_animation = true;
+                    load_new_card();
                 }
             }
 
@@ -233,5 +220,16 @@ public class FoodCardBehaviour : MonoBehaviour
 
         Sprite icon_sprite = Resources.Load<Sprite>("Images/cards/food/" + card_type.ToString().ToLower());
         iconChild.GetComponent<SpriteRenderer>().sprite = icon_sprite;
+    }
+
+    private void load_new_card() {
+        card_type = DeckHandler.throw_card_in_trash(card_type);
+        load_sprites();
+        scale_big();
+        // Back to below origin
+        Vector3 origin = new Vector3(initial_x, initial_y - 2.7f, 0);
+        card.transform.position = origin;
+        animation_offset = 2.6f;
+        new_card_animation = true;
     }
 }

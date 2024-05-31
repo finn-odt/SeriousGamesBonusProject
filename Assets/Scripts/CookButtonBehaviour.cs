@@ -33,21 +33,18 @@ public class CookButtonBehaviour : MonoBehaviour
     public void pointerEnteredButton()
     {
         if (button.interactable)
-        {
-            Debug.Log("change color to hover"); 
-            
+        {            
             Image buttonImage = button.GetComponent<Image>();
 
             if (buttonImage != null)
             {
-                buttonImage.color = new Color(0.5f, 0.5f, 0.5f); //new Color(226, 255, 223);
+                buttonImage.color = new Color(0.8f, 0.8f, 0.8f); //new Color(226, 255, 223);
             }
         }
     }
 
     public void pointerLeftButton()
     {
-        Debug.Log("change color to non hover");
         button.GetComponent<Image>().color = new Color(255, 255, 255);
     }
 }

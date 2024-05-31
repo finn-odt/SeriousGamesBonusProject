@@ -59,7 +59,6 @@ public class FightingHandler : MonoBehaviour
 
         if (healthSlider != null)
         {   
-            Debug.Log("Healthslider: " + healthSlider);
             healthSlider.value = (float)enemyHealth;
         }
     }

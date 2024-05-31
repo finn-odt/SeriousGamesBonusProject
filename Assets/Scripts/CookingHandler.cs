@@ -45,6 +45,9 @@ public static class CookingHandler
 
         ingredients.Clear();
 
+        // Gegner Schaden zufügen
+        FightingHandler.hit_with_dish(efficiency);
+
         List<GameObject> deaktivated_cards = get_deaktivated_cards();
         foreach(GameObject card in deaktivated_cards)
         {

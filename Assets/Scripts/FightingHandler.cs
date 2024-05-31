@@ -43,7 +43,16 @@ public class FightingHandler : MonoBehaviour
     }
 
     public static void hit_with_card(CardType card) {
-        double damage = CalculateDamage(card);
+        double damage = CalculateDamage(DeckHandler.get_efficiency_of_card(card));
+        hit(damage);
+    }
+
+    public static void hit_with_dish(double efficiency) {
+        double damage = CalculateDamage(efficiency);
+        hit(damage);
+    }
+
+    private static void hit(double damage) {
         enemyHealth -= damage;
         if (enemyHealth > maxHealth) enemyHealth = maxHealth;
         Debug.Log("Gegner getroffen! Verbleibende Gesundheit: " + enemyHealth);
@@ -55,8 +64,8 @@ public class FightingHandler : MonoBehaviour
         }
     }
 
-    private static double CalculateDamage(CardType card)
+    private static double CalculateDamage(double efficiency)
     {
-        return 30 * DeckHandler.get_efficiency_of_card(card);
+        return 30 * efficiency;
     }
 }

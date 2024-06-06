@@ -152,12 +152,15 @@ public class FoodCardBehaviour : MonoBehaviour
                     CookingHandler.add_ingredient(card_type);
                     card.SetActive(false);
 
-                    load_new_card();
+                    //load_new_card();
                 }
                 else if (hits[i].collider.gameObject == trash)
                 {
                     reached_target = true;
-                    
+
+                    // put card in trash
+                    DeckHandler.throw_card_in_trash(card_type);
+                    // draw new card, load new sprite and start animation for new card
                     load_new_card();
                 }
                 else if (hits[i].collider.gameObject == enemy)
@@ -166,6 +169,7 @@ public class FoodCardBehaviour : MonoBehaviour
 
                     FightingHandler.hit_with_card(card_type);
 
+                    // draw new card and reload sprites
                     load_new_card();
                 }
             }
@@ -187,7 +191,7 @@ public class FoodCardBehaviour : MonoBehaviour
         card.transform.localScale = scaleChange;
     }
 
-    public void transform_card()
+    private void transform_card()
     {
         if (card_type == CardType.CHICKEN)
         {
@@ -222,9 +226,12 @@ public class FoodCardBehaviour : MonoBehaviour
         iconChild.GetComponent<SpriteRenderer>().sprite = icon_sprite;
     }
 
-    private void load_new_card() {
-        card_type = DeckHandler.throw_card_in_trash(card_type);
+    public void load_new_card() {
+        // draw new card
+        card_type = DeckHandler.draw_card();
+        // reload sprite
         load_sprites();
+        // scale to big
         scale_big();
         // Back to below origin
         Vector3 origin = new Vector3(initial_x, initial_y - 2.7f, 0);

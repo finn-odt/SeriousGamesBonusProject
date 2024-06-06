@@ -54,13 +54,13 @@ public class FightingHandler : MonoBehaviour
 
     public static void hit_with_card(CardType card) {
         double efficiency = DeckHandler.get_efficiency_of_card(card);
-        double damage = CalculateDamage(efficiency);
+        double damage = calculate_damage(efficiency);
         add_score(efficiency * 10);
         hit(damage);
     }
 
     public static void hit_with_dish(double efficiency) {
-        double damage = CalculateDamage(efficiency);
+        double damage = calculate_damage(efficiency);
         add_score(efficiency * 20);
         hit(damage);
     }
@@ -76,7 +76,7 @@ public class FightingHandler : MonoBehaviour
         }
     }
 
-    private static double CalculateDamage(double efficiency)
+    private static double calculate_damage(double efficiency)
     {
         return 30 * efficiency;
     }

@@ -83,7 +83,7 @@ public static class DeckHandler
         return active_pile[idx];
     }
 
-    private static CardType draw_card()
+    public static CardType draw_card()
     {
         if(draw_pile == null)
         {
@@ -92,10 +92,14 @@ public static class DeckHandler
 
         int card_idx = UnityEngine.Random.Range(0, draw_pile.Count);
 
-        return draw_pile[card_idx];
+        CardType new_card = draw_pile[card_idx];
+        active_pile.Add(new_card);
+        draw_pile.Remove(new_card);
+
+        return new_card;
     }
 
-    public static CardType throw_card_in_trash(CardType old_card)
+    public static void throw_card_in_trash(CardType old_card)
     {
         // Removing card from active card
         active_pile.Remove(old_card);
@@ -109,13 +113,6 @@ public static class DeckHandler
         {
             discard_pile.Add(old_card);
         }
-
-        // Drawing new card
-        CardType new_card = draw_card();
-        active_pile.Add(new_card);
-        draw_pile.Remove(new_card);
-
-        return new_card;
     }
 
     public static double get_efficiency_of_card(CardType card)

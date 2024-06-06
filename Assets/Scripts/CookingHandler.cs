@@ -43,29 +43,32 @@ public static class CookingHandler
 
         Debug.Log("Cooking with efficiency: " + efficiency);
 
+        // Clear the ingredients (for next dish)
         ingredients.Clear();
 
         // Gegner Schaden zufügen
         FightingHandler.hit_with_dish(efficiency);
 
-        List<GameObject> deaktivated_cards = get_deaktivated_cards();
-        foreach(GameObject card in deaktivated_cards)
+        // for getting new cards after cooking
+        List<GameObject> deactivated_cards = get_deactivated_cards();
+        foreach(GameObject card in deactivated_cards)
         {
             card.SetActive(true);
+            card.GetComponent<FoodCardBehaviour>().load_new_card();
         }
     }
 
-    private static List<GameObject> get_deaktivated_cards()
+    private static List<GameObject> get_deactivated_cards()
     {
-        List<GameObject> deaktivated_cards = new List<GameObject>();
+        List<GameObject> deactivated_cards = new List<GameObject>();
         foreach (GameObject card in Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[])
         {
             if (card.CompareTag("card") && !card.activeInHierarchy)
             {
-                deaktivated_cards.Add(card);
+                deactivated_cards.Add(card);
             }
         }
-        return deaktivated_cards;
+        return deactivated_cards;
     }
 
 }

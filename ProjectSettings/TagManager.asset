@@ -42,17 +42,23 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Pot & Trash
+  - name: MainBackground
+    uniqueID: 318242225
+    locked: 0
+  - name: Pot & Trash & Enemy
     uniqueID: 2211175473
     locked: 0
-  - name: Background
+  - name: CardBackground
     uniqueID: 204294509
     locked: 0
-  - name: Icon
+  - name: CardIcon
     uniqueID: 84965427
     locked: 0
   - name: Card
     uniqueID: 1350845659
+    locked: 0
+  - name: CardText
+    uniqueID: 1002508483
     locked: 0
   - name: Default
     uniqueID: 0

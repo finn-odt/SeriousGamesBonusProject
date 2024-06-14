@@ -49,29 +49,35 @@ public static class DeckHandler
     private static List<CardType> active_pile;
     private static List<CardType> discard_pile;
 
+    public static int number_of_different_cards = 14;
+
     public static void generate_deck()
     {
         draw_pile = new List<CardType>();
         active_pile = new List<CardType>();
         discard_pile = new List<CardType>();
 
-        int number_of_different_cards = 14;
         // TODO: Karten-Typ-Begrenzungen??
 
-        // Generate 50 cards for drawing
-        while (draw_pile.Count < 50)
+        // Generate 20 cards for drawing
+        while (draw_pile.Count < 20)
         {
             CardType type = (CardType)UnityEngine.Random.Range(0, number_of_different_cards); // random number between 0 and number_of_different_cards
             draw_pile.Add(type);
         }
 
+        Debug.Log("Deck: " + draw_pile.Count);
+        Debug.Log(String.Join(", ", draw_pile));
+
         // Draw 5 hand cards
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
-            CardType card = draw_card();
-            active_pile.Add(card);
-            draw_pile.Remove(card);
+            draw_card();
         }
+
+        Debug.Log("Deck: " + draw_pile.Count);
+        Debug.Log(String.Join(", ", active_pile));
+        Debug.Log(String.Join(", ", draw_pile));
     }
 
     public static CardType get_card_from_actives(int idx)
@@ -101,7 +107,7 @@ public static class DeckHandler
 
     public static void throw_card_in_trash(CardType old_card)
     {
-        // Removing card from active card
+        // Removing card from active cards
         active_pile.Remove(old_card);
 
         // 50% that old card will be removed from deck
@@ -113,6 +119,37 @@ public static class DeckHandler
         {
             discard_pile.Add(old_card);
         }
+    }
+
+    public static void throw_card_in_pot(CardType card)
+    {
+        // Removing card from active cards
+        active_pile.Remove(card);
+    }
+
+    public static void put_ingredients_back_to_deck(List<CardType> ingredients)
+    {
+        // Removing card from active cards
+        foreach (CardType card in ingredients)
+        {
+            draw_pile.Add(card);
+        }
+    }
+
+    public static void expand_deck_with_cards()
+    {
+        int added_cards = 0;
+        while (added_cards < 7)
+        {
+            CardType type = (CardType)UnityEngine.Random.Range(0, number_of_different_cards); // random number between 0 and number_of_different_cards
+            draw_pile.Add(type);
+            added_cards++;
+        }
+    }
+
+    public static int get_amount_of_deck_cards()
+    {
+        return draw_pile.Count;
     }
 
     public static double get_efficiency_of_card(CardType card)
@@ -168,16 +205,19 @@ public static class DeckHandler
             bool potato_gratin = ingredients.Contains(CardType.POTATOES) && ingredients.Contains(CardType.CHEESE) && ingredients.Contains(CardType.CREAM);
             bool tart_flambee_easy = ingredients.Contains(CardType.DOUGH) && ingredients.Contains(CardType.ONIONS) && ingredients.Contains(CardType.CREAM);
 
+            bool potato_gratin_easy_with_beef = ingredients.Contains(CardType.POTATOES) && ingredients.Contains(CardType.CHEESE) && ingredients.Contains(CardType.BEEF);
+            bool potato_gratin_easy_with_veg_hack = ingredients.Contains(CardType.POTATOES) && ingredients.Contains(CardType.CHEESE) && ingredients.Contains(CardType.VEGANHACK);
+
             bool pasta_carbonara = ingredients.Contains(CardType.NOODLES) && ingredients.Contains(CardType.CREAM) && ingredients.Contains(CardType.BACON);
             bool pasta_carbonara_veg = ingredients.Contains(CardType.NOODLES) && ingredients.Contains(CardType.CREAM) && ingredients.Contains(CardType.VEGANBACON);
 
-            if(pasta_with_tomatoe_sauce_normal || potato_gratin || tart_flambee_easy || pasta_carbonara_veg)
+            if(pasta_with_tomatoe_sauce_normal || potato_gratin || tart_flambee_easy || pasta_carbonara_veg || potato_gratin_easy_with_veg_hack)
             {
                 return 1.2;  // 20% more effective
             }
-            if(pasta_carbonara)
+            if(pasta_carbonara || potato_gratin_easy_with_beef)
             {
-                return -0.2;
+                return -0.4;
             }
         } else if(ingredients.Count == 4)
         {

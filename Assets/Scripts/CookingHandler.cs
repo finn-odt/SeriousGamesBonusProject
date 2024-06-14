@@ -43,6 +43,9 @@ public static class CookingHandler
 
         Debug.Log("Cooking with efficiency: " + efficiency);
 
+        // add ingredients back to draw pile
+        DeckHandler.put_ingredients_back_to_deck(ingredients);
+
         // Clear the ingredients (for next dish)
         ingredients.Clear();
 

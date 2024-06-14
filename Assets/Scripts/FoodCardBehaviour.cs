@@ -149,6 +149,7 @@ public class FoodCardBehaviour : MonoBehaviour
                 {
                     reached_target = true;
                     // Throw in cooking pot
+                    DeckHandler.throw_card_in_pot(card_type);
                     CookingHandler.add_ingredient(card_type);
                     card.SetActive(false);
 

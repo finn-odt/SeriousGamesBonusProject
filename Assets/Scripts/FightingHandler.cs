@@ -13,6 +13,9 @@ public class FightingHandler : MonoBehaviour
     public static TMPro.TextMeshProUGUI score;
     private static double points = 0;
 
+    public TextMeshProUGUI status_text;
+    public Button restart_button;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,8 +45,19 @@ public class FightingHandler : MonoBehaviour
     {
         if (enemyHealth <= 0.0)
         {
-            Destroy(enemy); // Entfernt den Gegner aus der Szene
+            // Enemy is defeated
+            Destroy(enemy); // Entfernt den Gegner aus der Szene  TODO: nicht zwingend nötig, Szene könnte neugestartet werden
             Debug.Log("Gegner besiegt!");
+            DeckHandler.expand_deck_with_cards();  // draw 5 new random cards to the draw pile
+            //restart_button.gameObject.SetActive(true);
+            //status_text.color = new Color(7, 219, 0);
+            //status_text.text = "You win!";
+            //status_text.gameObject.SetActive(true);
+        }
+        else
+        {
+            restart_button.gameObject.SetActive(false);
+            status_text.gameObject.SetActive(false);
         }
 
         if (healthSlider != null)

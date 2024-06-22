@@ -57,7 +57,9 @@ public static class DeckHandler
         active_pile = new List<CardType>();
         discard_pile = new List<CardType>();
 
-        // TODO: Karten-Typ-Begrenzungen??
+        // TODO: Karten-Typ-Begrenzungen (mindestens 1 Dish muss kreiiert werden können -> Zufall -> Switch -> Dish hinzufügen & random auffüllen
+        CardType type = CardType.NOODLES; // random number between 0 and number_of_different_cards
+        draw_pile.Add(type);
 
         // Generate 20 cards for drawing
         while (draw_pile.Count < 20)
@@ -138,6 +140,7 @@ public static class DeckHandler
 
     public static void expand_deck_with_cards()
     {
+        Debug.Log("expand deck");
         int added_cards = 0;
         while (added_cards < 7)
         {

@@ -11,10 +11,9 @@ public class FightingHandler : MonoBehaviour
     public static double maxHealth = 100;
     public static Slider healthSlider;
     public static TMPro.TextMeshProUGUI score;
-    private static double points = 0;
+    public static double points = 0;
 
-    public TextMeshProUGUI status_text;
-    public Button restart_button;
+    private static double current_damage = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -46,48 +45,62 @@ public class FightingHandler : MonoBehaviour
         if (enemyHealth <= 0.0)
         {
             // Enemy is defeated
-            Destroy(enemy); // Entfernt den Gegner aus der Szene  TODO: nicht zwingend nötig, Szene könnte neugestartet werden
+            DeckHandler.expand_deck_with_cards();  // draw 7 new random cards to the draw pile
+            GameStatusHandler.Instance.update_game_status(GameStatus.WIN);
+
+            enemy.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0); // Gegner wird rot
             Debug.Log("Gegner besiegt!");
-            DeckHandler.expand_deck_with_cards();  // draw 5 new random cards to the draw pile
-            //restart_button.gameObject.SetActive(true);
-            //status_text.color = new Color(7, 219, 0);
-            //status_text.text = "You win!";
-            //status_text.gameObject.SetActive(true);
-        }
-        else
-        {
-            restart_button.gameObject.SetActive(false);
-            status_text.gameObject.SetActive(false);
         }
 
         if (healthSlider != null)
         {
             healthSlider.value = (float)enemyHealth;
         }
+
+        // Enemy is getting damage (with update for smoother animation)
+        double temp_damage = 65.0 * Time.deltaTime;
+        if (current_damage > 0.0)  // damaging of enemy
+        {
+            enemyHealth -= temp_damage;
+            if (current_damage - temp_damage > 0)
+            {
+                current_damage -= temp_damage;
+            }
+            else
+            {
+                current_damage = 0;
+            }
+        }
+        else if (current_damage < 0.0)  // healing of enemy
+        {
+            enemyHealth += temp_damage;
+            if (current_damage + temp_damage < 0)
+            {
+                current_damage += temp_damage;
+            }
+            else
+            {
+                current_damage = 0;
+            }
+        }
+        if (healthSlider != null)
+        {
+            healthSlider.value = (float)enemyHealth;  // display updated health slider
+        }
+
     }
 
     public static void hit_with_card(CardType card) {
         double efficiency = DeckHandler.get_efficiency_of_card(card);
         double damage = calculate_damage(efficiency);
         add_score(efficiency * 10);
-        hit(damage);
+        current_damage += damage;
     }
 
     public static void hit_with_dish(double efficiency) {
         double damage = calculate_damage(efficiency);
         add_score(efficiency * 20);
-        hit(damage);
-    }
-
-    private static void hit(double damage) {
-        enemyHealth -= damage;
-        if (enemyHealth > maxHealth) enemyHealth = maxHealth;
-        Debug.Log("Gegner getroffen! Verbleibende Gesundheit: " + enemyHealth);
-
-        if (healthSlider != null)
-        {   
-            healthSlider.value = (float)enemyHealth;
-        }
+        current_damage += damage;
     }
 
     private static double calculate_damage(double efficiency)
@@ -98,6 +111,11 @@ public class FightingHandler : MonoBehaviour
     private static void add_score(double tmp_points) {
         points += tmp_points;
         Debug.Log("Score: " + points);
+        print_score();
+    }
+
+    public static void print_score()
+    {
         if (score != null)
         {
             score.text = points.ToString("F0");

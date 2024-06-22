@@ -8,6 +8,15 @@ TagManager:
   - enemy
   - health_bar
   - score
+  - start_button
+  - status_text
+  - overlay
+  - ingredients_list
+  - ingredient_1
+  - ingredient_2
+  - ingredient_3
+  - ingredient_4
+  - ingredient_5
   layers:
   - Default
   - TransparentFX

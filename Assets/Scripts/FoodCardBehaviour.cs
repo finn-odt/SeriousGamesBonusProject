@@ -152,8 +152,6 @@ public class FoodCardBehaviour : MonoBehaviour
                     DeckHandler.throw_card_in_pot(card_type);
                     CookingHandler.add_ingredient(card_type);
                     card.SetActive(false);
-
-                    //load_new_card();
                 }
                 else if (hits[i].collider.gameObject == trash)
                 {
@@ -229,7 +227,14 @@ public class FoodCardBehaviour : MonoBehaviour
 
     public void load_new_card() {
         // draw new card
-        card_type = DeckHandler.draw_card();
+        try
+        {
+            card_type = DeckHandler.draw_card();
+        } catch 
+        {
+            GameStatusHandler.Instance.update_game_status(GameStatus.LOSE);
+            return;
+        }
         // reload sprite
         load_sprites();
         // scale to big

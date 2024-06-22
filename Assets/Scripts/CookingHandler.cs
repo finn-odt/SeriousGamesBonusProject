@@ -6,6 +6,7 @@ public static class CookingHandler
 {
 
     private static List<CardType> ingredients;
+    private static int ingredient_index = 1;
 
     public static bool are_there_ingredients()
     {
@@ -16,6 +17,27 @@ public static class CookingHandler
         return true;
     }
 
+    public static void clear_ingredients()
+    {
+        ingredients.Clear();
+
+        ingredient_index = 1;
+
+        GameObject ingredients_list = GameObject.FindWithTag("ingredients_list");
+
+        if (ingredients_list != null)
+        {
+            // Alle child-Objekte durchgehen
+            foreach (Transform child in ingredients_list.transform)
+            {
+                // Sicherstellen, dass das child ein SpriteRenderer hat
+                SpriteRenderer spriteRenderer = child.GetComponent<SpriteRenderer>();
+                // Das Sprite auf None setzen
+                spriteRenderer.sprite = null;
+            }
+        }
+    }
+
     public static void add_ingredient(CardType card)
     {
         if (ingredients == null)
@@ -23,6 +45,14 @@ public static class CookingHandler
             ingredients = new List<CardType>();
         }
         ingredients.Add(card);
+
+        Sprite icon_sprite = Resources.Load<Sprite>("Images/cards/food/" + card.ToString().ToLower());
+        GameObject ingredient_icon = GameObject.FindWithTag("ingredient_" + ingredient_index);
+        if (ingredient_icon != null)
+        {
+            ingredient_icon.GetComponent<SpriteRenderer>().sprite = icon_sprite;
+        }
+        ingredient_index++;
     }
 
     public static void cook()
@@ -47,7 +77,7 @@ public static class CookingHandler
         DeckHandler.put_ingredients_back_to_deck(ingredients);
 
         // Clear the ingredients (for next dish)
-        ingredients.Clear();
+        clear_ingredients();
 
         // Gegner Schaden zufügen
         FightingHandler.hit_with_dish(efficiency);

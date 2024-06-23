@@ -57,14 +57,59 @@ public static class DeckHandler
         active_pile = new List<CardType>();
         discard_pile = new List<CardType>();
 
-        // TODO: Karten-Typ-Begrenzungen (mindestens 1 Dish muss kreiiert werden können -> Zufall -> Switch -> Dish hinzufügen & random auffüllen
-        CardType type = CardType.NOODLES; // random number between 0 and number_of_different_cards
-        draw_pile.Add(type);
+        // Karten-Typ-Begrenzungen (all ingredients of at least 1 dish have to be in the deck)
+        int dish_select = UnityEngine.Random.Range(0, 5);
+        switch(dish_select)
+        {
+            case 0:  // noodles with tomato-sauce
+                draw_pile.Add(CardType.NOODLES);
+                draw_pile.Add(CardType.TOMATOES);
+                if (UnityEngine.Random.Range(0, 6) < 4)  // 2/3 chance to get onions
+                {
+                    draw_pile.Add(CardType.ONIONS);
+                }
+                if (UnityEngine.Random.Range(0, 6) < 2)  // 1/3 chance to get garlic
+                {
+                    draw_pile.Add(CardType.GARLIC);
+                }
+                break;
+            case 1:  // potato gratin
+                draw_pile.Add(CardType.POTATOES);
+                draw_pile.Add(CardType.CHEESE);
+                if (UnityEngine.Random.Range(0, 6) < 4)  // 2/3 chance to get cream
+                {
+                    draw_pile.Add(CardType.CREAM);
+                }
+                if (UnityEngine.Random.Range(0, 6) < 2)  // 1/3 chance to get broccoli
+                {
+                    draw_pile.Add(CardType.BROCCOLI);
+                }
+                break;
+            case 2:  // tarte flambee
+                draw_pile.Add(CardType.DOUGH);
+                draw_pile.Add(CardType.ONIONS);
+                draw_pile.Add(CardType.CREAM);
+                if(UnityEngine.Random.Range(0, 6) < 2)  // 1/3 chance to get zucchini
+                {
+                    draw_pile.Add(CardType.ZUCCHINI);
+                }
+                break;
+            case 3:  // potato gratin with beef
+                draw_pile.Add(CardType.POTATOES);
+                draw_pile.Add(CardType.CHEESE);
+                draw_pile.Add(CardType.BEEF);
+                break;
+            case 4:  // spaghetti carbonara
+                draw_pile.Add(CardType.NOODLES);
+                draw_pile.Add(CardType.CREAM);
+                draw_pile.Add(CardType.BACON);
+                break;
+        }
 
         // Generate 20 cards for drawing
         while (draw_pile.Count < 20)
         {
-            CardType type = (CardType)UnityEngine.Random.Range(0, number_of_different_cards); // random number between 0 and number_of_different_cards
+            CardType type = (CardType)UnityEngine.Random.Range(0, number_of_different_cards); // random number between 0 and number_of_different_cards-1
             draw_pile.Add(type);
         }
 

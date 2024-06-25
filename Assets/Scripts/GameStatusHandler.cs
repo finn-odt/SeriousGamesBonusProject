@@ -108,6 +108,10 @@ public class GameStatusHandler : MonoBehaviour
 
                 // Overlay
                 overlay.SetActive(true);
+
+                if (status == GameStatus.LOSE) {
+                    DeckHandler.reset_deck();
+                }
             }
         //}
     }

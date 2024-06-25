@@ -26,6 +26,7 @@ public class StartButtonBehaviour : MonoBehaviour
         SceneManager.LoadScene("MainScene");
         GameStatusHandler.Instance.update_game_status(GameStatus.FIGHTING);
         FightingHandler.enemyHealth = 100;
+        FightingHandler.dead = false;
         FightingHandler.points = 0;
         FightingHandler.print_score();
 

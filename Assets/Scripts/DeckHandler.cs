@@ -107,7 +107,7 @@ public static class DeckHandler
         }
 
         // Generate 20 cards for drawing
-        while (draw_pile.Count < 20)
+        while (draw_pile.Count < 15)
         {
             CardType type = (CardType)UnityEngine.Random.Range(0, number_of_different_cards); // random number between 0 and number_of_different_cards-1
             draw_pile.Add(type);
@@ -197,6 +197,7 @@ public static class DeckHandler
 
     public static int get_amount_of_deck_cards()
     {
+        if (draw_pile == null) return 0;
         return draw_pile.Count;
     }
 
@@ -280,5 +281,12 @@ public static class DeckHandler
         }
 
         return 0.8;  // 20% less effective
+    }
+
+    public static void reset_deck()
+    {
+        draw_pile = null;
+        active_pile = null;
+        discard_pile = null;
     }
 }

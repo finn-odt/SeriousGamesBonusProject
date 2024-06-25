@@ -12,6 +12,7 @@ public class FightingHandler : MonoBehaviour
     public static Slider healthSlider;
     public static TMPro.TextMeshProUGUI score;
     public static double points = 0;
+    public static bool dead = false;
 
     private static double current_damage = 0;
 
@@ -42,9 +43,10 @@ public class FightingHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (enemyHealth <= 0.0)
+        if (enemyHealth <= 0.0 && !dead)
         {
             // Enemy is defeated
+            dead = true;
             DeckHandler.expand_deck_with_cards();  // draw 7 new random cards to the draw pile
             GameStatusHandler.Instance.update_game_status(GameStatus.WIN);
 

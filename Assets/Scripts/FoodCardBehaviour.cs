@@ -62,7 +62,7 @@ public class FoodCardBehaviour : MonoBehaviour
             Vector3 origin = new Vector3(initial_x, initial_y - animation_offset, 0);
             card.transform.position = origin;
 
-            animation_offset -= 0.005f;
+            animation_offset -= 0.05f;
             if(animation_offset <= 0f)
             {
                 new_card_animation = false;
